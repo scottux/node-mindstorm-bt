@@ -1,0 +1,5 @@
+This module use the bluetooth direct commands api.
+
+In testing/alpha so far. Not all features implemented.
+
+It will result in a npm package so you can install it using npm.

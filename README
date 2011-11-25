@@ -1,5 +1,28 @@
-This module use the bluetooth direct commands api.
+# Mindstorms BlueTooth
 
-In testing/alpha so far. Not all features implemented.
+Mindstorms bluetooth is a nodejs module to communicate with your mindstorm brick using the direct api over bluetooth.
 
-It will result in a npm package so you can install it using npm.
+## How to install:
+
+	npm install mindstorms_bluetooth
+	
+## How to use:
+
+First setup your Lego Mindstoms NXT brick. It will create a serial port, get that name. On Mac OS X is it on the form: /dev/tty.NXT-DevB, or at least on my mac is it so.
+
+Require it, initialize and use.
+
+```js
+var Nxt = require('mindstorms_bluetooth');
+
+var nxt = new Nxt("/dev/tty.NXT-DevB");
+nxt.play_tone(440, 1000);
+```
+
+# API:
+
+Please see the nxt.js for now. I will create a better api documentation soon.
+
+# Bigger example
+
+TODO

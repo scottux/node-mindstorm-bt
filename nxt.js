@@ -43,6 +43,12 @@ var Nxt = function (port) {
 	this.MOTOR_RUN_STATE_RUNNING = 0x20;
 	this.MOTOR_RUN_STATE_RAMPDOWN = 0x40;
 
+	//Input ports
+	this.INPUT_PORT_1 = 0x00;
+	this.INPUT_PORT_2 = 0x01;
+	this.INPUT_PORT_3 = 0x02;
+	this.INPUT_PORT_4 = 0x03;
+
 	//Sensor types
 	this.NO_SENSOR = 0x00;
 	this.SWITCH = 0x01;
@@ -140,19 +146,23 @@ Nxt.prototype.set_output_state = function (port, power, mode, reg_mode, turn_rat
 };
 
 Nxt.prototype.set_input_state = function (port, sensor_type, sensor_mode) {
-	//TODO: Implement
+	var command = new Buffer([0x00, 0x05, port, sensor_type, sensor_mode]);
+	this.execute_command(command);
 };
 
 Nxt.prototype.get_output_state = function (port) {
-	//TODO: Implement
+	var command = new Buffer([0x00, 0x06, port]);
+	this.execute_command(command);
 };
 
-Nxt.prototype.get_input_state = function (port) {
-	//TODO: Implement
+Nxt.prototype.get_input_values = function (port) {
+	var command = new Buffer([0x00, 0x07, port]);
+	this.execute_command(command);
 };
 
 Nxt.prototype.reset_input_scaled_value = function (port) {
-	//TODO: Implement
+	var command = new Buffer([0x00, 0x08, port]);
+	this.execute_command(command);
 };
 
 Nxt.prototype.message_write = function (inbox_no, message) {
@@ -160,7 +170,8 @@ Nxt.prototype.message_write = function (inbox_no, message) {
 };
 
 Nxt.prototype.reset_motor_position = function (port, relative) {
-	//TODO: Implement
+	var command = new Buffer([0x00, 0x0a, port, (relative ? 0x01 : 0x00)]);
+	this.execute_command(command);
 };
 
 Nxt.prototype.get_battery_level = function () {
@@ -179,7 +190,8 @@ Nxt.prototype.keep_alive = function () {
 };
 
 Nxt.prototype.ls_get_status = function (port) {
-	//TODO: Implement
+	var command = new Buffer([0x00, 0x0e, port]);
+	this.execute_command(command);
 }
 
 Nxt.prototype.ls_write = function (port, rx_read_length, tx_data) {
@@ -187,7 +199,8 @@ Nxt.prototype.ls_write = function (port, rx_read_length, tx_data) {
 };
 
 Nxt.prototype.ls_read = function (port) {
-	//TODO: Implement
+	var command = new Buffer([0x00, 0x10, port]);
+	this.execute_command(command);
 };
 
 Nxt.prototype.get_current_program_name = function () {
@@ -196,7 +209,8 @@ Nxt.prototype.get_current_program_name = function () {
 };
 
 Nxt.prototype.message_read = function (remote_inbox_no, local_inbox_no, remove_remote_msg) {
-	//TODO: Implement
+	var command = new Buffer([0x00, 0x13, remote_inbox_no, local_inbox_no, (remove_remote_msg ? 0x01 : 0x00)]);
+	this.execute_command(command);
 };
 
 Nxt.prototype.execute_command = function (command, callback) {
@@ -213,6 +227,7 @@ Nxt.prototype.execute_command = function (command, callback) {
 
 Nxt.prototype.status_handle = function (data) {
 	data = data.slice(2);
+	console.log(data);
 	if (data[2] > 0) {
 		console.log("Error did happen!!!\nThe error: " + this.nxt_error_messages[data[2]]);
 	} else {

@@ -121,7 +121,14 @@ Nxt.prototype.nxt_commands = {
 };
 
 Nxt.prototype.start_program = function (program_name) {
-	//TODO: Implement
+	var command_arr = [0x00,0x00];
+	var chars = program_name.split('');
+	var i;
+	for (i in chars) {
+		command_arr.push(chars[i]);
+	}
+	var command = new Buffer(command_arr);
+	this.execute_command(command);
 };
 
 Nxt.prototype.stop_program = function () {
@@ -165,8 +172,15 @@ Nxt.prototype.reset_input_scaled_value = function (port) {
 	this.execute_command(command);
 };
 
+//Message is needed to be an array
 Nxt.prototype.message_write = function (inbox_no, message) {
-	//TODO: Implement
+	var command_arr = [0x00, 0x09, inbox_no, message.length];
+	var i;
+	for (i in message) {
+		command_arr.push(message[i]);
+	}
+	var command = new Buffer(command_arr);
+	this.execute_command(command);
 };
 
 Nxt.prototype.reset_motor_position = function (port, relative) {
@@ -194,8 +208,15 @@ Nxt.prototype.ls_get_status = function (port) {
 	this.execute_command(command);
 }
 
+//tx_data needs to be an array
 Nxt.prototype.ls_write = function (port, rx_read_length, tx_data) {
-	//TODO: Implement
+	var command_arr = [0x00, 0x0f, port, tx_data.length, rx_read_length];
+	var i;
+	for (i in tx_data) {
+		command_arr.push(tx_data[i]);
+	}
+	var command = new Buffer(command_arr);
+	this.execute_command(command);
 };
 
 Nxt.prototype.ls_read = function (port) {
